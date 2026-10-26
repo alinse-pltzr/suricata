@@ -1837,6 +1837,9 @@ static int PcapLogOpenFileCtx(PcapLogData *pl)
 
     if (pl->mode == LOGMODE_MULTI || pl->mode == LOGMODE_NORMAL) {
         pcap_file_thread = pl->filename;
+        SCLogWarning("PCAP open/update: tls=%p filename=%s",
+            (void *)pcap_file_thread,
+            pcap_file_thread != NULL ? pcap_file_thread : "(null)");
     }
     PCAPLOG_PROFILE_END(pl->profile_open);
     return 0;
@@ -1849,6 +1852,9 @@ error:
 char *PcapLogGetFilename(void)
 {
     /* return pcap filename per thread */
+    SCLogWarning("PCAP filename lookup: tls=%p filename=%s",
+        (void *)pcap_file_thread,
+        pcap_file_thread != NULL ? pcap_file_thread : "(null)");
     if (pcap_file_thread != NULL) {
         return pcap_file_thread;
     }

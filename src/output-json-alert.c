@@ -854,6 +854,12 @@ static int AlertJson(ThreadVars *tv, JsonAlertLogThread *aft, const Packet *p)
         }
 
         char *pcap_filename = PcapLogGetFilename();
+        // Debug Log for capture Filename
+        SCLogWarning("Alert logger: thread=%s, capture_file=%s",
+            tv->name,
+            pcap_filename != NULL ? pcap_filename : "(null)");
+
+
         if (pcap_filename != NULL) {
             SCJbSetString(jb, "capture_file", pcap_filename);
         }
