@@ -1848,10 +1848,15 @@ error:
 
 char *PcapLogGetFilename(void)
 {
-    /* return pcap filename per thread */
-    if (pcap_file_thread != NULL) {
+    /* normal mode: all threads share g_pcap_data. take filename from there */
+    if (g_pcap_data != NULL && g_pcap_data->mode == LOGMODE_NORMAL) {
+        return g_pcap_data->filename;
+    }
+    /* multi mode: filename per thread*/
+    else if (pcap_file_thread != NULL) {
         return pcap_file_thread;
     }
+
     return NULL;
 }
 
