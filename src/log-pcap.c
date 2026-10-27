@@ -1851,13 +1851,15 @@ error:
 
 char *PcapLogGetFilename(void)
 {
-    /* return pcap filename per thread */
-    SCLogWarning("PCAP filename lookup: tls=%p filename=%s",
-        (void *)pcap_file_thread,
-        pcap_file_thread != NULL ? pcap_file_thread : "(null)");
-    if (pcap_file_thread != NULL) {
+    if (g_pcap_data != NULL && g_pcap_data->mode == LOGMODE_NORMAL) {
+        return g_pcap_data->filename;
+        SCLogWarning("PCAP shared filename: ptr=%p filename=%s",
+            (void *)g_pcap_data->filename,
+            g_pcap_data->filename != NULL ? g_pcap_data->filename : "(null)");
+    } else if (pcap_file_thread != NULL) {
         return pcap_file_thread;
     }
+
     return NULL;
 }
 
